@@ -1,0 +1,33 @@
+---
+
+- name: rm then create tmp workspace
+  file:
+    path: /tmp/bootstrap
+    state: "{{ item }}"
+  with_items:
+    - absent
+    - directory
+
+- name: setup bootstrap.sh
+  template:
+    src: bootstrap.sh
+    dest: /tmp/bootstrap/bootstrap.sh
+
+- name: setup bootstrap.yml
+  copy:
+    src: bootstrap.yml
+    dest: /tmp/bootstrap/bootstrap.yml
+
+- name: put the bootstrap scripts
+  s3:
+    profile: phaban-inc
+    region: us-east-1
+    bucket: "{{ bot_bootstrap_bucket }}"
+    src: "/tmp/bootstrap/{{ item }}"
+    object: "{{ item }}"
+    mode: put
+  with_items:
+    - bootstrap.sh
+    - bootstrap.yml
+    
+

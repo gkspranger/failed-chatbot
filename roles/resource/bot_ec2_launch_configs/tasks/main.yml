@@ -1,0 +1,24 @@
+---
+
+- name: create ec2 launch configs
+  ec2_lc:
+    profile: phaban-inc
+    region: us-east-1
+    name: "{{ item.key }}_{{ item.value.version }}"
+    image_id: "{{ item.value.image | default( bot_image ) }}"
+    key_name: "{{ aws_prefix }}"
+    instance_profile_name: "{{ item.value.role | default( bot_role ) }}"
+    assign_public_ip: True
+    security_groups:
+      - "{{ aws_security_groups.results[0].group_id }}"
+      - "{{ aws_security_groups.results[1].group_id }}"
+    instance_type: "{{ item.value.type | default( bot_type ) }}"
+    user_data: |
+      #!/bin/bash
+      mkdir -p /root/bootstrap
+      aws s3 sync s3://phaban-inc-bootstrap /root/bootstrap
+      /bin/bash /root/bootstrap/bootstrap.sh
+  with_dict: "{{ bot_clients }}"
+  register: aws_launch_configs
+
+#- debug: var=aws_launch_configs

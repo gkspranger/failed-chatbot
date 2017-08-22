@@ -1,0 +1,4 @@
+---
+  
+aws_s3_buckets_vars:
+  - "{{ bot_bootstrap_bucket }}"

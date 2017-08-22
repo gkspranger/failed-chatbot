@@ -1,0 +1,17 @@
+---
+
+# ansible-playbook -i inventories/localhost playbooks/deploy/finbot_code.yml
+
+- hosts: localhost
+  connection: local
+  become: True
+  vars_files:
+    - "{{ inventory_dir }}/vars/bootstrap.yml"
+    - "{{ inventory_dir }}/vars/vault.yml"
+  roles:
+    - role: "{{ roles_dir }}/action/setup"
+      tags: setup
+    - role: "{{ roles_dir }}/resource/plugins"
+      tags: plugins
+    - role: "{{ roles_dir }}/resource/finbot_code"
+      tags: finbot_code

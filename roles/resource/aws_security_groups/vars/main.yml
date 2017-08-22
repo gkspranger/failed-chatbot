@@ -1,0 +1,22 @@
+---
+
+aws_security_groups_vars:
+  - name: "{{ aws_prefix }}_base"
+    description: base
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "10.10.0.0/16"
+      # vpn
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "123.123.123.123/16"
+  - name: "{{ aws_prefix }}_bot"
+    description: bot
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: "10.10.0.0/16"

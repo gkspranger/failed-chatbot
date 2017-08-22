@@ -1,0 +1,12 @@
+---
+  
+- name: add node repository for Node.js 6.0
+  shell:
+    curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+  args:
+    creates: /etc/yum.repos.d/nodesource-el.repo
+
+- name: install Node.js 6.0
+  yum:
+    name: nodejs
+    state: present

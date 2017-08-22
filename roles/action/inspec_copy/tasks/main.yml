@@ -1,0 +1,17 @@
+---
+
+# check the controls setup before we start copying tests to it
+- name: check to make sure it exists before you start copying
+  stat:
+    path: /opt/inspec/default/controls
+  register: inspec_setup
+
+# it setup is OK, copy tests to the defined path
+- name: copy inspec tests related to the role
+  template:
+    src: "{{ roles_dir }}/{{ referrer }}/inspec/test.rb"
+    dest: /opt/inspec/default/controls/{{ referrer | regex_replace('.*/', '') }}_spec.rb
+    owner: root
+    group: root
+    mode: 0750
+  when: inspec_setup.stat.exists

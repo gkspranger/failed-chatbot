@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: "{{ roles_dir }}/action/inspec_copy"
+    referrer: "resource/zlib_devel"
+    tags:
+      - inspec
+      - inspec_copy
+      - zlib_devel_tests
+    
+    

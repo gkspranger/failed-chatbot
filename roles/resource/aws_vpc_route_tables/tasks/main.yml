@@ -1,0 +1,19 @@
+---
+
+- name: create route table for publiv subnet to use internet gateway for internet stuff
+  ec2_vpc_route_table:
+    profile: phaban-inc
+    region: us-east-1
+    vpc_id: "{{ aws_vpc.vpc_id }}"
+    tags:
+      Name: "{{ aws_prefix }}_public"
+    subnets:
+      - "{{ aws_vpc.subnets[0].id }}"
+      - "{{ aws_vpc.subnets[1].id }}"
+      - "{{ aws_vpc.subnets[2].id }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ aws_vpc.igw_id }}"
+  register: aws_vpc_public_route_table
+  
+#- debug: var=aws_vpc_public_route_table

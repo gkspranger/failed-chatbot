@@ -1,0 +1,4 @@
+---
+
+- include: "{{ roles_dir }}/resource/hubot_setup/handlers/main.yml"
+  static: True

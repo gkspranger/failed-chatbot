@@ -1,0 +1,9 @@
+---
+
+- name: config /usr/local/bin/slacktee
+  template:
+    src: slacktee.sh
+    dest: /usr/local/bin/slacktee
+    owner: root
+    group: root
+    mode: 0750

@@ -1,0 +1,22 @@
+---
+
+# ansible-playbook -i inventories/localhost playbooks/construct/aws.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - "{{ inventory_dir }}/vars/bootstrap.yml"
+    - "{{ inventory_dir }}/vars/vault.yml"
+  roles:
+    - role: "{{ roles_dir }}/resource/aws_vpc"
+    - role: "{{ roles_dir }}/resource/aws_vpc_route_tables"
+    - role: "{{ roles_dir }}/resource/aws_vpc_nacl"
+    - role: "{{ roles_dir }}/resource/aws_security_groups"
+    - role: "{{ roles_dir }}/resource/aws_ec2_key_pairs"
+    - role: "{{ roles_dir }}/resource/aws_s3_buckets"
+    - role: "{{ roles_dir }}/resource/bot_ec2_bootstrap"
+      tags:
+        - bootstrap
+    - role: "{{ roles_dir }}/resource/bot_ec2_launch_configs"
+    - role: "{{ roles_dir }}/resource/bot_ec2_auto_scaling_groups"

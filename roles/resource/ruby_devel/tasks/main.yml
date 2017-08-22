@@ -1,0 +1,6 @@
+---
+
+- name: install ruby devel
+  yum:
+    name: ruby-devel
+    state: present

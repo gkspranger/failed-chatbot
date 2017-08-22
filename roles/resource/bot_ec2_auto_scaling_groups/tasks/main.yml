@@ -1,0 +1,30 @@
+---
+
+- name: create aws autoscaling groups
+  ec2_asg:
+    profile: phaban-inc
+    region: us-east-1
+    name: "{{ item.key }}"
+    launch_config_name: "{{ item.key }}_{{ item.value.version }}"
+    health_check_period: 60
+    health_check_type: EC2
+    replace_all_instances: True
+    min_size: 1
+    max_size: 1
+    desired_capacity: 1
+    state: present
+    vpc_zone_identifier:
+      - "{{ aws_vpc.subnets[0].id }}"
+      - "{{ aws_vpc.subnets[1].id }}"
+      - "{{ aws_vpc.subnets[2].id }}"
+    tags:
+      - Name: "{{ item.key }}"
+      - branch: "{{ item.value.branch | default( bot_master_branch ) }}"
+      - node_branch: "{{ item.value.node_branch | default( bot_master_branch ) }}"
+      - client: "{{ item.key }}"
+      - playbook: "{{ item.value.playbook | default( bot_playbook ) }}"
+      - bot_name: "{{ item.value.bot_name }}"
+  with_dict: "{{ bot_clients }}"
+  register: bot_ec2_asgs
+
+#- debug: var=bot_ec2_asgs

@@ -1,0 +1,22 @@
+---
+
+- name: create nacl public 1
+  ec2_vpc_nacl:
+    profile: phaban-inc
+    region: us-east-1
+    vpc_id: "{{ aws_vpc.vpc_id }}"
+    name: "{{ aws_prefix }}_public_1"
+    subnets:
+      - "{{ aws_vpc.subnets[0].id }}"
+      - "{{ aws_vpc.subnets[1].id }}"
+      - "{{ aws_vpc.subnets[2].id }}"
+    tags:
+      Name: "{{ aws_prefix }}_public_1"
+    ingress:
+      - [ 100, "all", "allow", "0.0.0.0/0", null, null, null, null ]
+    egress:
+      - [ 100, "all", "allow", "0.0.0.0/0", null, null, null, null ]
+    state: present
+  register: aws_vpc_public_nacl_1
+
+#- debug: var=aws_vpc_public_nacl_1

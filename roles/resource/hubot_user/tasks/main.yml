@@ -1,0 +1,8 @@
+---
+
+- name: create hubot user
+  user:
+    name: hubot
+    home: /opt/hubot
+    shell: /bin/bash
+    uid: 5000

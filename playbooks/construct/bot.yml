@@ -1,0 +1,45 @@
+---
+
+# ansible-playbook -i inventories/localhost playbooks/construct/bot.yml
+
+- hosts: localhost
+  connection: local
+  become: True
+  vars_files:
+    - "{{ inventory_dir }}/vars/bootstrap.yml"
+    - "{{ inventory_dir }}/vars/vault.yml"
+  roles:
+    - role: "{{ roles_dir }}/action/setup"
+      tags: setup
+    - role: "{{ roles_dir }}/resource/plugins"
+      tags: plugins
+    - role: "{{ roles_dir }}/resource/timezone"
+      tags: timezone
+    - role: "{{ roles_dir }}/resource/zlib_devel"
+      tags: zlib_devel
+    - role: "{{ roles_dir }}/resource/ruby_devel"
+      tags: ruby_devel
+    - role: "{{ roles_dir }}/resource/inspec_setup"
+      tags: inspec_setup
+    - role: "{{ roles_dir }}/resource/mlocate"
+      tags: mlocate
+    - role: "{{ roles_dir }}/resource/slack_channels"
+      tags: slack_channels
+    - role: "{{ roles_dir }}/resource/slacktee"
+      tags: slacktee
+    - role: "{{ roles_dir }}/resource/sumo_linux_collector"
+      tags: sumo_linux_collector
+    - role: "{{ roles_dir }}/resource/bot_systems_check"
+      tags: bot_systems_check
+    - role: "{{ roles_dir }}/resource/redis"
+      tags: redis
+    - role: "{{ roles_dir }}/resource/nodejs_6"
+      tags: nodejs_6
+    - role: "{{ roles_dir }}/resource/hubot_user"
+      tags: hubot_user
+    - role: "{{ roles_dir }}/resource/hubot_setup"
+      tags: hubot_setup
+    - role: "{{ roles_dir }}/resource/deploy_scripts"
+      tags: deploy_scripts
+    - role: "{{ roles_dir }}/resource/finbot_code"
+      tags: finbot_code

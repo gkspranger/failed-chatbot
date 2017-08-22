@@ -1,0 +1,24 @@
+---
+
+ansible_vault_password: "secret"
+ansible_codecommit_username: "secret"
+ansible_codecommit_password: "secret"
+
+bot_clients_secrets:
+  # test:                                                   # name of client .. so client id essentially
+    # slack_bot_token: "<slack bot token>"                  # bot token given by slack
+    # slack_webhook_url: "<slack webhook url for garage>"   # custom webhook integration for garage posts
+    # slack_setup_app_token: "<slack app token>"            # custom app so it creates channels by default .. see set
+    # redtail_api_key: "<redtail api key>"                  # redtail api key .. either prod or dev
+    # redtail_username: "<redtail api username>"            # redtail user name
+    # redtail_password: "<redtail api password>"            # redtail password
+  test:
+    slack_bot_token: "secret"
+    slack_webhook_url: "secret"
+    slack_setup_app_token: "secret"
+    redtail_api_key: "secret"
+    redtail_username: "secret"
+    redtail_password: "secret"
+
+sumo_id: "secret"
+sumo_key: "secret"

@@ -1,0 +1,4 @@
+---
+
+roles_dir: "{{ inventory_dir | regex_replace('inventories$', 'roles') }}"
+playbooks_dir: "{{ inventory_dir | regex_replace('inventories$', 'playbooks') }}"

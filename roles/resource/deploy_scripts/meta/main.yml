@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: "{{ roles_dir }}/action/inspec_copy"
+    referrer: "resource/deploy_scripts"
+    tags:
+      - inspec
+      - inspec_copy
+      - deploy_scripts_tests
+    
+    

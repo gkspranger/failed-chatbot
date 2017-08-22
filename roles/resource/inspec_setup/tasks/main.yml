@@ -1,0 +1,53 @@
+---
+
+- name: setup inspec workspace
+  file:
+    path: /opt/inspec
+    owner: root
+    group: root
+    state: directory
+    mode: 0755
+
+- name: rsync inspec structure
+  synchronize:
+    src: "{{ roles_dir }}/resource/inspec_setup/files/"
+    dest: /opt/inspec/
+    checksum: yes
+    recursive: yes
+    times: no
+    owner: no
+    group: no
+  delegate_to: localhost
+
+# this is kinda like pip for the uninitiated
+# let's you store ruby "packages" in a "venv" and use them when needed 
+- gem:
+    name: "{{ item }}"
+    state: present
+    user_install: False
+  with_items:
+    - io-console
+    - bundler
+
+- name: determine if inspec is installed
+  shell: |
+    cd /opt/inspec
+    /usr/local/bin/bundle exec inspec help
+  register: inspec_installed
+  ignore_errors: True
+  changed_when: False
+  
+- name: install inspec
+  shell: |
+    cd /opt/inspec
+    /usr/local/bin/bundle install --path ./gems/
+  when: inspec_installed.rc != 0
+
+# this is because i am lazy and prefer to just type "rit" to run my inspec tests locally
+- name: config /usr/local/bin/rit
+  template:
+    src: rit.sh
+    dest: /usr/local/bin/rit
+    owner: root
+    group: root
+    mode: 0750

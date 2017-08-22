@@ -1,0 +1,34 @@
+---
+
+- name: creating vpc
+  ec2_vpc:
+    profile: phaban-inc
+    region: us-east-1
+    state: present
+    cidr_block: 10.10.0.0/16
+    dns_hostnames: False
+    dns_support: True
+    resource_tags:
+      Name: "{{ aws_prefix }}"
+    subnets:
+      - cidr: 10.10.1.0/24
+        az: us-east-1a
+        resource_tags: { "Name" : "{{ aws_prefix }}_10.10.1.0/24" }
+      - cidr: 10.10.2.0/24
+        az: us-east-1b
+        resource_tags: { "Name" : "{{ aws_prefix }}_10.10.2.0/24" }
+      - cidr: 10.10.3.0/24
+        az: us-east-1c
+        resource_tags: { "Name" : "{{ aws_prefix }}_10.10.3.0/24" }
+    internet_gateway: True
+    route_tables:
+      - subnets:
+        - 10.10.1.0/24
+        - 10.10.2.0/24
+        - 10.10.3.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw    
+  register: aws_vpc
+
+#- debug: var=aws_vpc

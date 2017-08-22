@@ -1,0 +1,26 @@
+---
+
+- name: config /opt/hubot/*
+  template:
+    src: "{{ item }}"
+    dest: "/opt/hubot/{{ item }}"
+    owner: hubot
+    group: hubot
+    mode: 0644
+  notify: restart hubot
+  with_items:
+    - hubot.env
+
+- name: config /etc/init.d/hubot
+  template:
+    src: initd_hubot.sh
+    dest: /etc/init.d/hubot
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart hubot
+
+- name: enable and start
+  service:
+    name: hubot
+    enabled: True

@@ -1,0 +1,12 @@
+---
+
+- name: restart crond
+  service:
+    name: crond
+    state: restarted
+
+- name: restart hubot
+  service:
+    name: hubot
+    state: restarted
+    

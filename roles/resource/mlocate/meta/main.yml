@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: "{{ roles_dir }}/action/inspec_copy"
+    referrer: "resource/mlocate"
+    tags:
+      - inspec
+      - inspec_copy
+      - mlocate_tests
+    
+    

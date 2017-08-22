@@ -1,0 +1,22 @@
+---
+
+- name: create needed channels
+  uri:
+    url: https://slack.com/api/channels.create
+    method: POST
+    body: "token={{ bot_clients_secrets[ ec2_tags.tags.client ].slack_setup_app_token }}&name={{ item }}&validate=true"
+    return_content: True
+  register: slack_channels_created
+  with_items: "{{ slack_channels }}"
+
+- debug: var=slack_channels_created
+
+- name: list channel info
+  uri:
+    url: https://slack.com/api/channels.list
+    method: POST
+    body: "token={{ bot_clients_secrets[ ec2_tags.tags.client ].slack_setup_app_token }}"
+    return_content: True
+  register: slack_channels_listed
+
+- debug: var=slack_channels_listed

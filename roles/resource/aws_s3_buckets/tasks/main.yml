@@ -1,0 +1,11 @@
+---
+
+- name: create s3 bucket
+  s3_bucket:
+    profile: phaban-inc
+    region: us-east-1
+    name: "{{ item }}"
+  with_items: "{{ aws_s3_buckets_vars }}"
+  register: aws_s3_buckets
+  
+#- debug: var=aws_s3_buckets

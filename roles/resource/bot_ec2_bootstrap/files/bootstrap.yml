@@ -1,0 +1,79 @@
+---
+
+# ansible-playbook -i "localhost," -c local bootstrap.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - debug: msg="starting bootstrap .."
+
+    - name: get status of ansible running file
+      stat:
+        path: /var/run/ansible
+      register: ansible_running
+
+    - fail:
+        msg: "Ansible is already running .. stopping this execution now"
+      when: ansible_running.stat.exists
+
+    - name: create ansible running file
+      file:
+        path: /var/run/ansible
+        state: touch
+        owner: root
+        group: root
+        mode: 0444
+      when: not ansible_running.stat.exists
+
+    - name: get ec2 facts
+      ec2_facts:
+
+    - name: include local variables
+      include_vars:
+        dir: vars
+
+    - name: setup the vault password file
+      copy:
+        content: "{{ local_vault_password }}"
+        dest: /root/.vault_password.txt
+
+    - name: Retrieve all tags on an instance
+      ec2_tag:
+        region: us-east-1
+        resource: "{{ ansible_ec2_instance_id }}"
+        state: list
+      register: ec2_tags
+
+    - name: Get finbot repo
+      git:
+        repo: "https://{{ local_codecommit_username | urlencode }}:{{ local_codecommit_password | urlencode }}@<git repo url>"
+        dest: /root/finbot
+        version: "{{ ec2_tags.tags.branch }}"
+      register: finbot_repo
+
+    - name: echo start
+      shell: |
+        echo "start: `date +\"%Y-%m-%d %H:%M:%S\"`" >> /var/log/bootstrap-finbot.log 2>&1
+
+    - name: run finbot playbook
+      shell: |
+        source /opt/ansible/bin/activate
+        source /root/.bash_profile
+        cd /root/finbot
+        ansible-playbook -i inventories/localhost \
+        {{ bootstrap_playbook | default(ec2_tags.tags.playbook) }} \
+        --vault-password-file /root/.vault_password.txt \
+        >> /var/log/bootstrap-finbot.log 2>&1
+      ignore_errors: True
+
+    - name: echo end
+      shell: |
+        echo "end: `date +\"%Y-%m-%d %H:%M:%S\"`" >> /var/log/bootstrap-finbot.log 2>&1
+
+    - name: remove ansible running file
+      file:
+        path: /var/run/ansible
+        state: absent
+
+    - debug: msg="bootstrap finished !!"

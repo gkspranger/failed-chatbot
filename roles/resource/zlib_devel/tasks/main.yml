@@ -1,0 +1,6 @@
+---
+
+- name: install zlib devel
+  yum:
+    name: zlib-devel
+    state: present

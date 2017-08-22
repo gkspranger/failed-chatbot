@@ -1,0 +1,17 @@
+---
+
+- name: config /usr/local/bin/dfa
+  template:
+    src: deploy_finbot_all.sh
+    dest: /usr/local/bin/dfa
+    owner: root
+    group: root
+    mode: 0750
+
+- name: config /usr/local/bin/dfc
+  template:
+    src: deploy_finbot_code.sh
+    dest: /usr/local/bin/dfc
+    owner: root
+    group: root
+    mode: 0750

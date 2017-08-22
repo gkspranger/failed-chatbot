@@ -1,0 +1,23 @@
+{
+	"api.version":"v1",
+	"sources": [
+		{
+			"name": "{{ ec2_tags.tags.client }}-bootstrap",
+			"category": "bootstrap",
+			"pathExpression": "/var/log/bootstrap.log",
+			"sourceType":"LocalFile"
+		},
+		{
+			"name": "{{ ec2_tags.tags.client }}-bootsrap-finbot",
+			"category": "bootstrap-finbot",
+			"pathExpression": "/var/log/bootstrap-finbot.log",
+			"sourceType":"LocalFile"
+		},
+		{
+			"name": "{{ ec2_tags.tags.client }}-hubot",
+			"category": "hubot",
+			"pathExpression": "/var/log/hubot.log",
+			"sourceType":"LocalFile"
+		}
+	]
+}

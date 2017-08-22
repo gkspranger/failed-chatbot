@@ -1,0 +1,9 @@
+---
+
+- name: Get finbot-node code repo
+  git:
+    repo: "https://{{ ansible_codecommit_username | urlencode }}:{{ ansible_codecommit_password | urlencode }}@<git repo url>"
+    dest: /opt/hubot/finbot-node
+    version: "{{ ec2_tags.tags.node_branch | default('master') }}"
+  become_user: hubot
+  notify: restart hubot

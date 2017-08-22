@@ -1,0 +1,16 @@
+---
+
+- name: config /usr/local/bin/bot_systems_check
+  template:
+    src: bot_systems_check.sh
+    dest: /usr/local/bin/bot_systems_check
+    owner: root
+    group: root
+    mode: 0750
+
+- name: CRON bot systems check
+  cron:
+    name: bot_systems_check
+    minute: "0,15,30,45"
+    job: "/usr/local/bin/bot_systems_check >> /var/log/bot_systems_check.log 2>&1"
+    user: root

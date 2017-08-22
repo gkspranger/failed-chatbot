@@ -1,0 +1,11 @@
+---
+
+dependencies:
+  - role: "{{ roles_dir }}/action/inspec_copy"
+    referrer: "resource/ruby_devel"
+    tags:
+      - inspec
+      - inspec_copy
+      - ruby_devel_tests
+    
+    

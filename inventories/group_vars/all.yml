@@ -1,0 +1,40 @@
+---
+
+aws_prefix: phaban
+
+bot_bootstrap_bucket: phaban-bootstrap
+
+bot_role: bot
+
+bot_develop_branch: develop
+bot_master_branch: master
+
+bot_image: ami-1234567890
+
+bot_type: t2.micro
+
+bot_playbook: "playbooks/construct/bot.yml"
+
+bot_git_repo_url: "<some git repo url>"
+
+bot_clients:
+  # test:                                             # name of the client .. so client id essentially
+    # image: canbecustom                              # flexible use of ami id .. default to {{ bot_image }}
+    # version: "0001"                                 # increment to force a launch config update .. required
+    # role: canbecustom                               # the role to assign the node to in the launch config
+    # branch: develop                                 # the branch to use .. should start developing in develop
+    # playbook: canbecustom                           # the playbook to run .. this is it !!
+    # bot_name: canbecustom                           # the bot's name .. required
+    # log_level: debug                                # hubot log level .. default to info
+    # tz: "America/New_York"                          # so we can set the timezone .. required
+    # type: canbecustom                               # name of instance type .. default to {{ bot_type }}
+  test:
+    version: "0001"
+    branch: develop
+    node_branch: demo
+    bot_name: bob
+    log_level: debug
+    tz: "America/New_York"
+    type: t2.micro
+
+phaban_managed: "This resource is managed by PHABAN Inc. using Ansible"

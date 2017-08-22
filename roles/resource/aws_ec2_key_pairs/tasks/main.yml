@@ -1,0 +1,13 @@
+---
+
+- name: key pair
+  ec2_key:
+    profile: phaban-inc
+    region: us-east-1
+    state: present
+    name: "{{ aws_prefix }}"
+    key_material: "{{ item }}"
+  with_file: "{{ aws_prefix }}_rsa.pub"
+  register: aws_key_pairs
+
+# - debug: var=aws_key_pairs

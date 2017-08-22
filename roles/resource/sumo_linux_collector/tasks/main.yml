@@ -1,0 +1,31 @@
+---
+
+- name: download sumo RPM
+  get_url:
+    url: https://collectors.sumologic.com/rest/download/rpm/64
+    dest: "{{ sumo_rpm_path }}"
+    mode: 0444
+
+- name: install sumo from rpm
+  yum:
+    name: "{{ sumo_rpm_path }}"
+    state: present
+
+- name: put config files in place
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: sumologic_collector
+    mode: 0640
+  with_items:
+    - src: user.properties
+      dest: /opt/SumoCollector/config/user.properties
+    - src: sources.json
+      dest: /opt/SumoCollector/config/sources.json
+
+- name: ensure is started and enabled
+  service:
+    name: collector
+    state: started
+    enabled: True

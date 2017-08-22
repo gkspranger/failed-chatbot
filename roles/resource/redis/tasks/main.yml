@@ -1,0 +1,24 @@
+---
+
+- name: install redis
+  yum:
+    name: redis
+    enablerepo: epel
+    state: present
+
+- name: Setup /etc/redis.conf
+  template:
+    src: redis.conf
+    dest: /etc/redis.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart redis
+
+- name: enable and start redis
+  service:
+    name: redis
+    state: started
+    enabled: True
+
+    

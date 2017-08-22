@@ -1,0 +1,9 @@
+---
+
+- name: set timezone
+  timezone:
+    name: "{{ bot_clients[ ec2_tags.tags.client ].tz }}"
+  when: bot_clients[ ec2_tags.tags.client ].tz is defined
+  notify:
+    - restart crond
+    - restart hubot
